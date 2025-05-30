@@ -6,9 +6,21 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: postgres
-    url: jdbc://postgresql://localhost:5432/user_sub_db
+    url: jdbc:postgresql://localhost:5432/user_sub_db
+
+    hikari:
+      pool-name: HikariPool1
+      auto-commit: true
+      connection-timeout: 10000
+      maximum-pool-size: 10
+      minimum-idle: 5
 
   jpa:
     hibernate:
       ddl-auto: update
     open-in-view: true
+
+logging:
+  level:
+    com.zaxxer.hikari: INFO
+    org.hibernate: INFO
