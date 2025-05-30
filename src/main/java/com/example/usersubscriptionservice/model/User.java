@@ -33,7 +33,7 @@ public class User {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<UserSubscription> subscriptions = new ArrayList<>();
+    private List<Subscription> subscriptions = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

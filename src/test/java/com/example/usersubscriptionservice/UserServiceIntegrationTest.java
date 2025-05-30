@@ -4,7 +4,7 @@ import com.example.usersubscriptionservice.dao.UserRepositoryService;
 import com.example.usersubscriptionservice.dto.RequestUserDTO;
 import com.example.usersubscriptionservice.error.UserNotFoundException;
 import com.example.usersubscriptionservice.model.User;
-import com.example.usersubscriptionservice.service.UserSubService;
+import com.example.usersubscriptionservice.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Testcontainers
 @Transactional
-class UserSubscriptionServiceIntegrationTest {
+class UserServiceIntegrationTest {
 
     @Autowired
-    private UserSubService userSubService;
+    private UserService userService;
 
     @Autowired
     private UserRepositoryService userRepositoryService;
@@ -44,7 +44,7 @@ class UserSubscriptionServiceIntegrationTest {
 
         assertTrue(userRepositoryService.existsById(user.getId()));
 
-        userSubService.deleteUser(savedUser.getId());
+        userService.deleteUser(savedUser.getId());
 
         assertFalse(userRepositoryService.existsById(savedUser.getId()));
     }
@@ -54,7 +54,7 @@ class UserSubscriptionServiceIntegrationTest {
         Long nonExistingId = 999L;
 
         assertThrows(UserNotFoundException.class, () -> {
-            userSubService.deleteUser(nonExistingId);
+            userService.deleteUser(nonExistingId);
         }, "UserNotFoundException");
     }
 
@@ -74,7 +74,7 @@ class UserSubscriptionServiceIntegrationTest {
                 "test2@test.ru"
         );
 
-        userSubService.updateUser(savedUser.getId(), updateRequest);
+        userService.updateUser(savedUser.getId(), updateRequest);
 
         assertTrue(userRepositoryService.existsById(savedUser.getId()));
 

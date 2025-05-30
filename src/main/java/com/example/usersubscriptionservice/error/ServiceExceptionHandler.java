@@ -94,6 +94,14 @@ public class ServiceExceptionHandler {
                 .body(createErrorResponse(HttpStatus.BAD_REQUEST, errors));
     }
 
+    @ExceptionHandler(SubscribeNotExistException.class)
+    public ResponseEntity<ErrorResponseDTO> handleException(SubscribeNotExistException exception) {
+        Map<String, List<String>> errors = new HashMap<>();
+        List<String> messages = new ArrayList<>(){{add(exception.getMessage());}};
+        errors.put("messages", messages);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(createErrorResponse(HttpStatus.NOT_FOUND, errors));
+    }
+
     private ErrorResponseDTO createErrorResponse(HttpStatus status, Map<String, List<String>> errors) {
         return new ErrorResponseDTO(
                 status.value(),

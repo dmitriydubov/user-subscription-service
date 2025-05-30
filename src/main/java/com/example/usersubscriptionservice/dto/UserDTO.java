@@ -8,6 +8,6 @@ public record UserDTO(Long id,
         String lastName,
         String email,
         LocalDateTime createdAt,
-        List<UserSubscriptionDTO> subscriptions
+        List<SubscriptionDTO> subscriptions
 ) {
 }

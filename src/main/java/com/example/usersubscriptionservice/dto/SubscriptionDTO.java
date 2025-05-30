@@ -3,7 +3,7 @@ package com.example.usersubscriptionservice.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record UserSubscriptionDTO(
+public record SubscriptionDTO(
         Long id,
         String name,
         String serviceUrl,

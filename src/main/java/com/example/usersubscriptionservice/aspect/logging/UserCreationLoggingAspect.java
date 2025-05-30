@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class UserCreationLoggingAspect {
 
     @Before(
-            "execution(* com.example.usersubscriptionservice.service.UserSubService.createUser(..)) && " +
+            "execution(* com.example.usersubscriptionservice.service.UserService.createUser(..)) && " +
             "args(requestUserDTO)"
     )
     public void beforeUserCreation(RequestUserDTO requestUserDTO) {
@@ -21,7 +21,7 @@ public class UserCreationLoggingAspect {
     }
 
     @AfterReturning(
-            pointcut = "execution(* com.example.usersubscriptionservice.service.UserSubService.createUser(..))",
+            pointcut = "execution(* com.example.usersubscriptionservice.service.UserService.createUser(..))",
             returning = "result")
     public void afterUserCreated(UserDTO result) {
         log.info("Новый пользователь успешно создан id: {}, email: {}", result.id(), result.email());

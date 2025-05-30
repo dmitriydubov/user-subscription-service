@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class UserUpdatingLoggingAspect {
     @Before(
-            value = "execution(* com.example.usersubscriptionservice.service.UserSubService.updateUser(..)) && " +
+            value = "execution(* com.example.usersubscriptionservice.service.UserService.updateUser(..)) && " +
                     "args(id, requestUserDTO)",
             argNames = "id,requestUserDTO")
     public void beforeUserUpdating(Long id, RequestUserDTO requestUserDTO) {
@@ -23,7 +23,7 @@ public class UserUpdatingLoggingAspect {
     }
 
     @AfterReturning(
-            pointcut = "execution(* com.example.usersubscriptionservice.service.UserSubService.updateUser(..))",
+            pointcut = "execution(* com.example.usersubscriptionservice.service.UserService.updateUser(..))",
             returning = "result")
     public void afterUserUpdated(UserDTO result) {
         log.info("Данные пользователя id: {}, email: {} успешно обновлены", result.id(), result.email());

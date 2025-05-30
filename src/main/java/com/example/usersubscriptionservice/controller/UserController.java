@@ -2,7 +2,7 @@ package com.example.usersubscriptionservice.controller;
 
 import com.example.usersubscriptionservice.dto.RequestUserDTO;
 import com.example.usersubscriptionservice.dto.UserDTO;
-import com.example.usersubscriptionservice.service.UserSubService;
+import com.example.usersubscriptionservice.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/")
 @RequiredArgsConstructor
 @Validated
-public class UserSubController {
+public class UserController {
 
-    private final UserSubService userSubService;
+    private final UserService userService;
 
     @PostMapping("/users")
-    public ResponseEntity<UserDTO> create(@Valid @RequestBody RequestUserDTO requestUserDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userSubService.createUser(requestUserDTO));
+    public ResponseEntity<UserDTO> create(@Valid @RequestBody RequestUserDTO request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
     }
 
     @DeleteMapping("/users/{id}")
@@ -30,7 +30,7 @@ public class UserSubController {
             @Min(value = 1, message = "id должен быть положительным числом")
             Long id
     ) {
-        userSubService.deleteUser(id);
+        userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -40,7 +40,7 @@ public class UserSubController {
             @Min(value = 1, message = "id должен быть положительным числом")
             Long id
     ) {
-        return ResponseEntity.ok(userSubService.getUserInfo(id));
+        return ResponseEntity.ok(userService.getUserInfo(id));
     }
 
     @PutMapping("users/{id}")
@@ -48,8 +48,10 @@ public class UserSubController {
             @PathVariable
             @Min(value = 1, message = "id должен быть положительным числом")
             Long id,
-            @Valid @RequestBody RequestUserDTO requestUserDTO
+            @Valid
+            @RequestBody
+            RequestUserDTO request
     ) {
-        return ResponseEntity.ok(userSubService.updateUser(id, requestUserDTO));
+        return ResponseEntity.ok(userService.updateUser(id, request));
     }
 }

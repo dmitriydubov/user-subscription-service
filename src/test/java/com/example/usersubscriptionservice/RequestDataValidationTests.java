@@ -6,7 +6,6 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Set;
 
@@ -15,8 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class RequestDataValidationTests {
 
     private Validator validator;
-
-    private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {

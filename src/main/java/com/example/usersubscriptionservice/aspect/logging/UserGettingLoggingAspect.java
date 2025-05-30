@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class UserGettingLoggingAspect {
     @Before(
-            "execution(* com.example.usersubscriptionservice.service.UserSubService.getUserInfo(..)) && " +
+            "execution(* com.example.usersubscriptionservice.service.UserService.getUserInfo(..)) && " +
             "args(id)"
     )
     public void beforeUserGetting(Long id) {
         log.info("Попытка получения пользователя по id: {}", id);
     }
 
-    @AfterReturning(pointcut = "execution(* com.example.usersubscriptionservice.service.UserSubService.getUserInfo(..))")
+    @AfterReturning(pointcut = "execution(* com.example.usersubscriptionservice.service.UserService.getUserInfo(..))")
     public void afterUserGetting() {
         log.info("Данные пользователя успешно получены");
     }

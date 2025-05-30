@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class UserRemovingLoggingAspect {
     @Before(
-            "execution(* com.example.usersubscriptionservice.service.UserSubService.deleteUser(..)) && " +
+            "execution(* com.example.usersubscriptionservice.service.UserService.deleteUser(..)) && " +
             "args(id)"
     )
     public void beforeUserRemoving(Long id) {
         log.info("Попытка удаления пользователя по id: {}", id);
     }
 
-    @AfterReturning(pointcut = "execution(* com.example.usersubscriptionservice.service.UserSubService.deleteUser(..))")
+    @AfterReturning(pointcut = "execution(* com.example.usersubscriptionservice.service.UserService.deleteUser(..))")
     public void afterUserRemoving() {
         log.info("Пользователь успешно удален");
     }

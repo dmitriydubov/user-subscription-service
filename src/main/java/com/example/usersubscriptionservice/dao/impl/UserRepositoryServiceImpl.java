@@ -1,5 +1,6 @@
-package com.example.usersubscriptionservice.dao;
+package com.example.usersubscriptionservice.dao.impl;
 
+import com.example.usersubscriptionservice.dao.UserRepositoryService;
 import com.example.usersubscriptionservice.model.User;
 import com.example.usersubscriptionservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

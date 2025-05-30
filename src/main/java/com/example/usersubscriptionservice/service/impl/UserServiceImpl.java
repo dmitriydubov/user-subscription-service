@@ -5,30 +5,28 @@ import com.example.usersubscriptionservice.dto.UserDTO;
 import com.example.usersubscriptionservice.error.UserAlreadyExistsException;
 import com.example.usersubscriptionservice.error.UserNotFoundException;
 import com.example.usersubscriptionservice.mapper.UserMapper;
-import com.example.usersubscriptionservice.mapper.UserSubscriptionMapper;
 import com.example.usersubscriptionservice.model.User;
 import com.example.usersubscriptionservice.dao.UserRepositoryService;
-import com.example.usersubscriptionservice.service.UserSubService;
+import com.example.usersubscriptionservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserSubServiceImpl implements UserSubService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepositoryService repositoryService;
     private final UserMapper userMapper;
-    private final UserSubscriptionMapper userSubscriptionMapper;
 
     @Override
     @Transactional
-    public UserDTO createUser(RequestUserDTO requestUserDTO) {
-        validateEmail(requestUserDTO.email());
+    public UserDTO createUser(RequestUserDTO request) {
+        validateEmail(request.email());
         var user = new User();
-        user.setFirstName(requestUserDTO.firstName());
-        user.setLastName(requestUserDTO.lastName());
-        user.setEmail(requestUserDTO.email().toLowerCase().trim());
+        user.setFirstName(request.firstName());
+        user.setLastName(request.lastName());
+        user.setEmail(request.email().toLowerCase().trim());
 
         return userMapper.toDTO(repositoryService.save(user));
     }
@@ -52,18 +50,18 @@ public class UserSubServiceImpl implements UserSubService {
 
     @Override
     @Transactional
-    public UserDTO updateUser(Long id, RequestUserDTO requestUserDTO) {
+    public UserDTO updateUser(Long id, RequestUserDTO request) {
         User existingUser = repositoryService.getUser(id).orElseThrow(() ->
                 new UserNotFoundException("Пользователь с id " + id + " не зарегистрирован")
         );
 
-        if (!existingUser.getEmail().equalsIgnoreCase(requestUserDTO.email().trim())) {
-            validateEmail(requestUserDTO.email());
+        if (!existingUser.getEmail().equalsIgnoreCase(request.email().trim())) {
+            validateEmail(request.email());
         }
 
-        existingUser.setFirstName(requestUserDTO.firstName());
-        existingUser.setLastName(requestUserDTO.lastName());
-        existingUser.setEmail(requestUserDTO.email().toLowerCase().trim());
+        existingUser.setFirstName(request.firstName());
+        existingUser.setLastName(request.lastName());
+        existingUser.setEmail(request.email().toLowerCase().trim());
 
         return userMapper.toDTO(repositoryService.save(existingUser));
     }
