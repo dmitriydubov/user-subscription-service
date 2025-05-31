@@ -2,7 +2,7 @@ package com.example.usersubscriptionservice;
 
 import com.example.usersubscriptionservice.dao.UserRepositoryService;
 import com.example.usersubscriptionservice.dto.RequestUserDTO;
-import com.example.usersubscriptionservice.error.UserNotFoundException;
+import com.example.usersubscriptionservice.error.exception.UserNotFoundException;
 import com.example.usersubscriptionservice.model.User;
 import com.example.usersubscriptionservice.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -69,9 +69,9 @@ class UserServiceIntegrationTest {
         assertTrue(userRepositoryService.existsById(savedUser.getId()));
 
         RequestUserDTO updateRequest = new RequestUserDTO(
-                "Test2",
-                "User2",
-                "test2@test.ru"
+            "Test2",
+            "User2",
+            "test2@test.ru"
         );
 
         userService.updateUser(savedUser.getId(), updateRequest);

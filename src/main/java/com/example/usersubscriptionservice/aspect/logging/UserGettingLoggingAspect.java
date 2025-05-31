@@ -1,6 +1,6 @@
 package com.example.usersubscriptionservice.aspect.logging;
 
-import com.example.usersubscriptionservice.error.UserNotFoundException;
+import com.example.usersubscriptionservice.error.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -13,21 +13,23 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class UserGettingLoggingAspect {
     @Before(
-            "execution(* com.example.usersubscriptionservice.service.UserService.getUserInfo(..)) && " +
-            "args(id)"
+        "execution(* com.example.usersubscriptionservice.service.UserService.getUserInfo(..)) && " +
+        "args(id)"
     )
     public void beforeUserGetting(Long id) {
         log.info("Попытка получения пользователя по id: {}", id);
     }
 
-    @AfterReturning(pointcut = "execution(* com.example.usersubscriptionservice.service.UserService.getUserInfo(..))")
+    @AfterReturning(
+        pointcut = "execution(* com.example.usersubscriptionservice.service.UserService.getUserInfo(..))"
+    )
     public void afterUserGetting() {
         log.info("Данные пользователя успешно получены");
     }
 
     @AfterThrowing(
-            pointcut = "execution(* com.example..UserSubService.getUserInfo(..))",
-            throwing = "ex"
+        pointcut = "execution(* com.example..UserService.getUserInfo(..))",
+        throwing = "ex"
     )
     public void logFailedUserGetting(UserNotFoundException ex) {
         log.warn("Попытка получения пользователя: {}", ex.getMessage());

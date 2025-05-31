@@ -1,4 +1,4 @@
-package com.example.usersubscriptionservice.error;
+package com.example.usersubscriptionservice.error.exception;
 
 public class UserAlreadyExistsException extends RuntimeException {
     public UserAlreadyExistsException(String message) {

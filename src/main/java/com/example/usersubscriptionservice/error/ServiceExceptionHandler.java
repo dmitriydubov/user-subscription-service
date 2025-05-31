@@ -1,6 +1,9 @@
 package com.example.usersubscriptionservice.error;
 
 import com.example.usersubscriptionservice.dto.ErrorResponseDTO;
+import com.example.usersubscriptionservice.error.exception.SubscribeNotExistException;
+import com.example.usersubscriptionservice.error.exception.UserAlreadyExistsException;
+import com.example.usersubscriptionservice.error.exception.UserNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -38,16 +38,26 @@ public class ServiceExceptionHandler {
             .getFieldErrors()
             .stream()
             .collect(Collectors.groupingBy(
-                FieldError::getField,
+                error -> "messages",
                 Collectors.mapping(
-                    FieldError::getDefaultMessage,
-                    Collectors.toList()
+                        FieldError::getDefaultMessage,
+                        Collectors.toList()
                 )
             ));
+
+        if (errors.isEmpty()) {
+            Arrays.stream(ex.getDetailMessageArguments())
+                    .filter(Objects::nonNull)
+                    .filter(error -> !error.toString().isBlank())
+                    .forEach(error -> {
+                        errors.computeIfAbsent("messages", k -> new ArrayList<>()).add(error.toString());
+                    });
+        }
+
         log.warn("Ошибка валидации: {}",
             ex.getBindingResult().getFieldErrors().stream()
-            .map(FieldError::getDefaultMessage)
-            .collect(Collectors.joining(", "))
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.joining(", "))
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -104,9 +114,9 @@ public class ServiceExceptionHandler {
 
     private ErrorResponseDTO createErrorResponse(HttpStatus status, Map<String, List<String>> errors) {
         return new ErrorResponseDTO(
-                status.value(),
-                errors,
-                Instant.now()
+            status.value(),
+            errors,
+            Instant.now()
         );
     }
 }

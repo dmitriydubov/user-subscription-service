@@ -2,8 +2,6 @@ package com.example.usersubscriptionservice;
 
 import com.example.usersubscriptionservice.dao.SubscriptionRepositoryService;
 import com.example.usersubscriptionservice.dao.UserRepositoryService;
-import com.example.usersubscriptionservice.dto.RequestUserDTO;
-import com.example.usersubscriptionservice.error.UserNotFoundException;
 import com.example.usersubscriptionservice.model.Subscription;
 import com.example.usersubscriptionservice.model.User;
 import com.example.usersubscriptionservice.service.SubscriptionService;
@@ -25,9 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @Testcontainers
 @Transactional
 class SubscriptionServiceIntegrationTest {
-
-    @Autowired
-    private SubscriptionService subscriptionService;
 
     @Autowired
     private UserRepositoryService userRepositoryService;

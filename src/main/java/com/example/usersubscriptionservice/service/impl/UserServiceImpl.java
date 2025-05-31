@@ -2,8 +2,8 @@ package com.example.usersubscriptionservice.service.impl;
 
 import com.example.usersubscriptionservice.dto.RequestUserDTO;
 import com.example.usersubscriptionservice.dto.UserDTO;
-import com.example.usersubscriptionservice.error.UserAlreadyExistsException;
-import com.example.usersubscriptionservice.error.UserNotFoundException;
+import com.example.usersubscriptionservice.error.exception.UserAlreadyExistsException;
+import com.example.usersubscriptionservice.error.exception.UserNotFoundException;
 import com.example.usersubscriptionservice.mapper.UserMapper;
 import com.example.usersubscriptionservice.model.User;
 import com.example.usersubscriptionservice.dao.UserRepositoryService;

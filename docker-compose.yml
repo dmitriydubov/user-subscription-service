@@ -1,10 +1,43 @@
 services:
   postgres:
     image: 'postgres:17-alpine'
-    container_name: 'postgres-container'
+    container_name: 'postgres-service'
     environment:
       - 'POSTGRES_DB=user_sub_db'
       - 'POSTGRES_PASSWORD=postgres'
       - 'POSTGRES_USER=postgres'
     ports:
       - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: 'user-subscription-service'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://postgres:5432/user_sub_db'
+      SPRING_DATASOURCE_USERNAME: 'postgres'
+      SPRING_DATASOURCE_PASSWORD: 'postgres'
+      SPRING_JPA_HIBERNATE_DDL_AUTO: 'update'
+    ports:
+      - '8080:8080'
+    networks:
+      - app-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

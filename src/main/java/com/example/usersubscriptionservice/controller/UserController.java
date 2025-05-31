@@ -3,6 +3,8 @@ package com.example.usersubscriptionservice.controller;
 import com.example.usersubscriptionservice.dto.RequestUserDTO;
 import com.example.usersubscriptionservice.dto.UserDTO;
 import com.example.usersubscriptionservice.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -19,38 +21,45 @@ public class UserController {
 
     private final UserService userService;
 
+    @Operation(summary = "Создание пользователя")
     @PostMapping("/users")
     public ResponseEntity<UserDTO> create(@Valid @RequestBody RequestUserDTO request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
     }
 
+    @Operation(summary = "Удаление пользователя")
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> delete(
-            @PathVariable
-            @Min(value = 1, message = "id должен быть положительным числом")
-            Long id
+        @Parameter(description = "ID пользователя", required = true)
+        @PathVariable
+        @Min(value = 1, message = "id должен быть положительным числом")
+        Long id
     ) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Получение информации о пользователе")
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDTO> getUserById(
-            @PathVariable
-            @Min(value = 1, message = "id должен быть положительным числом")
-            Long id
+        @Parameter(description = "ID пользователя", required = true)
+        @PathVariable
+        @Min(value = 1, message = "id должен быть положительным числом")
+        Long id
     ) {
         return ResponseEntity.ok(userService.getUserInfo(id));
     }
 
+    @Operation(summary = "Обновление данных пользователя")
     @PutMapping("users/{id}")
     public ResponseEntity<UserDTO> update(
-            @PathVariable
-            @Min(value = 1, message = "id должен быть положительным числом")
-            Long id,
-            @Valid
-            @RequestBody
-            RequestUserDTO request
+        @Parameter(description = "ID пользователя", required = true)
+        @PathVariable
+        @Min(value = 1, message = "id должен быть положительным числом")
+        Long id,
+        @Valid
+        @RequestBody
+        RequestUserDTO request
     ) {
         return ResponseEntity.ok(userService.updateUser(id, request));
     }
